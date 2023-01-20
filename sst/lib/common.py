@@ -51,22 +51,12 @@ def get_root_credential_report(credential_report) -> list:
 
 def generate_credential_report(client) -> list:
     try:
+        client.generate_credential_report()
         return client.get_credential_report()["Content"].decode('ascii').split()
     except client.exceptions.CredentialReportNotPresentException:
-        logging.warning('CredentialReportNotPresent')
-        state = client.generate_credential_report()["State"]
-        if state == "COMPLETE":
-            return client.get_credential_report()["Content"].decode('ascii').split()
-        else:
-            logging.error(traceback.format_exc())
+        logging.error(traceback.format_exc())
     except client.exceptions.CredentialReportExpiredException:
-        logging.warning('CredentialReportExpiredException')
-        client.generate_credential_report()
-        state = client.generate_credential_report()
-        if state == "COMPLETE":
-            return client.get_credential_report()["Content"].decode('ascii').split()
-        else:
-            logging.error(traceback.format_exc())
+        logging.error(traceback.format_exc())
     except client.exceptions.CredentialReportNotReadyException:
         logging.error(traceback.format_exc())
     except client.exceptions.ServiceFailureException:
