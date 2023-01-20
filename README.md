@@ -50,7 +50,7 @@ AWS Resource 설정 정보에 대한 자세한 정보는 template.yaml 파일에
 > - Application 배포가 가능한 AWS Account
 > - Application 을 계정에 배포할 수 있는 권한을 가진 IAM Entity (IAM User, IAM Role 등)
 > - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) 설치 및 구성
-> - [AWS Serverless Application Model CLI](ttps://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) (AWS SAM CLI) 설치
+> - [AWS Serverless Application Model CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) (AWS SAM CLI) 설치
 > - Application Package 가 업로드 될 S3 Bucket 생성 및 권한 설정. 자세한 권한은 아래 [S3 Bucket Policy] 참고
 
 <br>
@@ -161,3 +161,8 @@ API 를 선택한 뒤 왼쪽 메뉴에서 `Stages` 메뉴를 선택하고 Prod S
 
 > *- AWS 보안 수준을 향상시키기 위한 추가 정보나 가이드라인을 알고 싶은 경우 어떻게 하면 좋을까요?*<br>
 > AWS 에서는 AWS 모범사례를 사용하여 아키텍처를 측정하기 위한 일관된 프로세스를 제공하는 클라우드 서비스로 [AWS Well-Architected Tool](https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/userguide/intro.html) 을 제공하고 있습니다. 보안 수준을 향상시키기 위한 추가 정보나 가이드라인이 필요하신 경우 AWS Well Architected Tool 의 Security pillar 를 기반으로 보안 모범사례를 참고하여 아키텍처 설계 및 진단을 하실 수 있습니다.
+>
+><br>
+
+> *- 이 Application 을 삭제하려면 어떻게 해야하나요?*<br>
+> AWS Lambda Management Console 에서 Applications > "serverlessrepo-AWS-Security-Self-Test-Application" 선택 > 우측 상단의 "Actions" 에서 "Delete" 를 누른 다음 알림창의 안내대로 삭제를 진행하시면 됩니다.
