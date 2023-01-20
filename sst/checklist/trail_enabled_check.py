@@ -41,7 +41,7 @@ def check_trail_enabled(session) -> common.CheckResult:
     if len(trails) == 0:
         ret.level = level.danger
         ret.msg = '''생성된 Trail 이 없습니다. Trail을 생성해 해주세요.&nbsp(<a href="https://docs.aws.amazon.com/ko_kr/prescriptive-guidance/latest/aws-startup-security-baseline/acct-07.html" target="_blank" style="overflow:hidden;word-break:break-all;">Trail 생성방법</a>)'''
-        ret.result_rows.append("-", "-")
+        ret.result_rows.append(["-", "-"])
     else :
 
         logging_disabled_counter = 0
