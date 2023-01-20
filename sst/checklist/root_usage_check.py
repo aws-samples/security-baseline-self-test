@@ -48,7 +48,7 @@ def check_root_usage(credential_report) -> common.CheckResult:
         if last_access_days.days == 0:
             ret.msg = "오늘 날짜의 루트 계정 사용이력이 존재합니다. 다른 자격증명으로 AWS 서비스를 이용해주세요."
         else:
-            ret.msg = "최근 {last_access_days} 이내에 루트 계정 사용이력이 존재합니다. 다른 자격증명으로 AWS 서비스를 이용해주세요.".format(last_access_days=str(last_access_days))
+            ret.msg = "최근 {last_access_days} 이내에 루트 계정 사용이력이 존재합니다. 다른 자격증명으로 AWS 서비스를 이용해주세요.".format(last_access_days=str(last_access_days.days))
 
     ret.result_rows.append(["PASSWORD", get_message(password_last_used_days)])
     ret.result_rows.append(["ACCESS KEY1", get_message(access_key1_last_used_days)])
