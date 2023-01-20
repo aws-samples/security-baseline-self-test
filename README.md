@@ -70,7 +70,7 @@ AWS Resource 설정 정보에 대한 자세한 정보는 template.yaml 파일에
             "Resource": "arn:aws:s3:::{BucketName}/*",
             "Condition": {
                 "StringEquals": {
-                    "aws:SourceAccount": {AccountID - 12 Digit}
+                    "aws:SourceAccount": "{AccountID - 12 Digit}"
                 }
             }
         }
