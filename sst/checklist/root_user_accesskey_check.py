@@ -3,7 +3,10 @@ from lib import level_const as level
 from datetime import datetime, timedelta
 
 def get_last_used_days(date) -> timedelta:
-    return datetime.utcnow() - datetime.fromisoformat(date[:-6])
+    if date == "N/A" or date=="no_information":
+        return timedelta(9999)
+    else :
+        return datetime.utcnow() - datetime.fromisoformat(date[:-6])
 
 def check_root_accesskey_usage(credential_report) -> common.CheckResult:
 
@@ -28,7 +31,13 @@ def check_root_accesskey_usage(credential_report) -> common.CheckResult:
     if access_key_1_status == "TRUE" :
         ret.level = level.danger
         last_used_days = get_last_used_days(root_credential_report[common.CREDENTIAL_REPORT_COLS.ACCESS_KEY_1_LAST_USED_DATE.value])
-        ret.result_rows.append(["AccessKey1", "사용 중", "{days}일 전".format(days=str(last_used_days.days))])
+        if last_used_days < timedelta(9999):
+            if last_used_days.days == 0:
+                ret.result_rows.append(["AccessKey1", "사용 중", "오늘"])
+            else:
+                ret.result_rows.append(["AccessKey1", "사용 중", "{days}일 전".format(days=str(last_used_days.days))])
+        else :
+            ret.result_rows.append(["AccessKey1", "사용 중", "N/A"])    
     else :
         ret.result_rows.append(["AccessKey1", "사용 안 함", "N/A"])
         pass
@@ -36,7 +45,13 @@ def check_root_accesskey_usage(credential_report) -> common.CheckResult:
     if access_key_2_status == "TRUE" :
         ret.level = level.danger
         last_used_days = get_last_used_days(root_credential_report[common.CREDENTIAL_REPORT_COLS.ACCESS_KEY_2_LAST_USED_DATE.value])
-        ret.result_rows.append(["AccessKey2", "사용 중", "{days}일 전".format(days=str(last_used_days.days))])
+        if last_used_days < timedelta(9999):
+            if last_used_days.days == 0:
+                ret.result_rows.append(["AccessKey2", "사용 중", "오늘"])
+            else:
+                ret.result_rows.append(["AccessKey2", "사용 중", "{days}일 전".format(days=str(last_used_days.days))])
+        else:
+            ret.result_rows.append(["AccessKey2", "사용 중", "N/A"])    
     else :
         ret.result_rows.append(["AccessKey2", "사용 안 함", "N/A"])
         pass
