@@ -27,7 +27,8 @@
 > - Amazon S3 Bucket
 > - Amazon Simple Notification Service (Amazon SNS)
 >
-> Amazon API Gateway 는 퍼블릭으로 배포된 API Endpoint URL 을 제공하며, 고객은 해당 URL 로 접속하여 계정에 대한 보안 자가진단을 시작할 수 있습니다.
+> Amazon API Gateway 는 퍼블릭으로 배포된 API Endpoint URL 을 제공하며, 고객은 해당 URL 로 접속하여 계정에 대한 보안 자가진단을 시작할 수 있습니다. 
+<br><br>이 API Endpoint URL 은 점검을 요청하는 용도로만 사용되며, 점검 결과는 Amazon S3 Bucket 에 저장되어 권한있는 사용자가 AWS Management Console 에 로그인해야만 확인이 가능합니다. 파일이 저장된 Bucket URL 은 결과 메일에서 확인이 가능합니다.
 <br><br>
 >API Gateway 의 Endpoint URL 호출은 보안 점검을 수행하는 AWS Lambda Function 을 차례로 호출합니다. 3개의 AWS Lambda Function 은 각각 차례로 <br>
 >
