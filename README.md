@@ -140,9 +140,12 @@ Application 을 선택하고 `API 만료일`, `점검 완료 알림을 받을 Em
 API 를 선택한 뒤 왼쪽 메뉴에서 `Stages` 메뉴를 선택하고 Prod Stage 를 선택하면 Prod Stage Editor 화면과 함께 `Invoke URL` 을 확인하실 수 있습니다. `Invoke URL` 을 클릭하시면 application 이 실행됩니다. <br><br>_<U>`이 URL 이 외부에 노출되는 경우 불필요한 추가비용이 발생할 수 있으니 안전하게 관리해주세요.`</U>_<br><br>
 ![run_application_step1](./images/run_application_step2.png)<br><br>
 
+### [ Result Email Sample ]
+> ![result_email](./images//result_email_sample.png)<br><br>
+
 ### [ Report Sample ]
 
-> ![run_application_step1](./images/report_sample.png)
+> ![report_sample](./images/report_sample.png)<br><br>
 
 # FAQ
 > *- Application 유지 비용이 발생하나요?*<br>
