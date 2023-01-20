@@ -1,4 +1,5 @@
 # What is a Security Baseline Self-Test application?
+> [공동 책임 모델](https://aws.amazon.com/ko/compliance/shared-responsibility-model/?nc1=h_ls)에 따라 AWS와 고객은 클라우드 보안에 대한 공동의 책임을 지닙니다. AWS는 클라우드에서 제공되는 모든 서비스를 실행하는 소프트웨어와 하드웨어를 포함한 인프라를 보호할 책임이 있습니다. 반면 고객은 이용하는 AWS 클라우드 서비스에서의 보안을 구성하고 관리할 책임을 가집니다.<br><br>
 > Security Baseline Self-Test Application 은 사용중인 `AWS 계정의 가장 기본적인 보안권고 사항에 대한 설정을 점검`하고, 그 `결과를 리포트로 제공`하는 AWS Sample Application 입니다.
 <br><br>
 이 Application 은 복잡한 아키텍처 구성이나 개발과정을 사용자가 직접 할 필요 없이 사전에 작성된 템플릿을 이용하여 계정에 자동으로 AWS 리소스를 생성하고 생성된 자원에 파이썬 코드를 자동으로 배포합니다.
@@ -15,6 +16,10 @@
 <br>
 
 # How it works?
+
+> ### [ Architecture ]<br>
+> ![architecture diagram](./images/architecture.png)
+>
 > Security Baseline Self-Test Application 은 다음과 같은 AWS Resource 를 자동으로 생성합니다.
 > 
 > - Amazon API Gateway
@@ -131,7 +136,7 @@ Application 을 선택하고 `API 만료일`, `점검 완료 알림을 받을 Em
 
 > 배포가 완료되면 [Amazon API Gateway Management Console](https://ap-northeast-2.console.aws.amazon.com/apigateway/home?region=ap-northeast-2) 의 API 목록에서 배포 완료된 application 의 API 를 확인하실 수 있습니다. 배포 과정에서 application 의 이름을 변경한 경우 아래 이미지와 다르게 보일 수 있습니다.<br><br>
 ![run_application_step1](./images/run_application_step1.png)<br><br>
-API 를 선택한 뒤 왼쪽 메뉴에서 `Stages` 메뉴를 선택하고 Prod Stage 를 선택하면 Prod Stage Editor 화면과 함께 `Invoke URL` 을 확인하실 수 있습니다. `Invoke URL` 을 클릭하시면 application 이 실행됩니다. <br><br><U>_`이 URL 이 외부에 노출되는 경우 불필요한 추가비용이 발생할 수 있으니 안전하게 관리해주세요.`_<U><br><br>
+API 를 선택한 뒤 왼쪽 메뉴에서 `Stages` 메뉴를 선택하고 Prod Stage 를 선택하면 Prod Stage Editor 화면과 함께 `Invoke URL` 을 확인하실 수 있습니다. `Invoke URL` 을 클릭하시면 application 이 실행됩니다. <br><br>_<U>`이 URL 이 외부에 노출되는 경우 불필요한 추가비용이 발생할 수 있으니 안전하게 관리해주세요.`</U>_<br><br>
 ![run_application_step1](./images/run_application_step2.png)<br><br>
 
 ### [ Report Sample ]
@@ -146,3 +151,13 @@ API 를 선택한 뒤 왼쪽 메뉴에서 `Stages` 메뉴를 선택하고 Prod S
 > 
 > *- API Gateway 의 Endpoint URL은 외부에서 호출이 가능한가요?*<br>
 > 네. Endpoint URL 은 외부에서 호출이 가능합니다. <br><br> 그러나 점검 결과는 S3 Bucket 에 저장되며, 점검 결과 리포트를 확인하기 위해서는 권한이 있는 사용자가 S3 Bucket의 Object를 다운로드 받아야합니다. 따라서 외부에서 Endpoint URL 을 호출하더라도 점검 결과 리포트는 외부로 전달되지 않습니다. <br><br> 하지만 외부에서 Endpoint URL 을 호출하는 경우 불필요한 추가 비용이 발생할 수 있으므로 `Endpoint URL 을 안전하게 관리해주시기 바랍니다.` 
+>
+> <br>
+>
+> *- 보안 수준을 향상시키기 위해 더 많은 항목을 점검하려면 어떻게 해야 하나요?*<br>
+> 더 많은 AWS 계정의 보안 설정을 점검하시고 싶은 경우 [AWS Trusted Advisor](https://aws.amazon.com/ko/blogs/korea/aws-trusted-advisor-new-priority-capability/) 를 사용하시면 좋습니다. AWS Trusted Advisors는 AWS 계정을 지속적으로 분석하고 AWS 보안 모범 사례 및 AWS Well-Architected 가이드라인을 따르는데 도움이 되는 서비스입니다. 따라서 AWS Trusted Advisor 를 통해 Security 진단 항목을 관리하시면 AWS 계정의 보안 수준을 향상시킬 수 있습니다.
+>
+> <br>
+
+> *- AWS 보안 수준을 향상시키기 위한 추가 정보나 가이드라인을 알고 싶은 경우 어떻게 하면 좋을까요?*<br>
+> AWS 에서는 AWS 모범사례를 사용하여 아키텍처를 측정하기 위한 일관된 프로세스를 제공하는 클라우드 서비스로 [AWS Well-Architected Tool](https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/userguide/intro.html) 을 제공하고 있습니다. 보안 수준을 향상시키기 위한 추가 정보나 가이드라인이 필요하신 경우 AWS Well Architected Tool 의 Security pillar 를 기반으로 보안 모범사례를 참고하여 아키텍처 설계 및 진단을 하실 수 있습니다.
