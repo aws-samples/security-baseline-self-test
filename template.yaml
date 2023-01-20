@@ -127,7 +127,6 @@ Resources:
           Bucket: !GetAtt AWSSecuritySelfTestBucket.Arn
           EmailReport: !Ref AWSSecuritySelfTestSendEmailFunction
           Topic: !Ref SnsTopic
-          TZ: 'Asia/Seoul'
       Architectures:
         - x86_64
 

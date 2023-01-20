@@ -538,7 +538,7 @@ def finalize_html():
 
 def generate_html_report(account_id_str, result_sort_by_level):
     
-    generated_at = datetime.datetime.now().strftime("(KST) %Y-%m-%d %H:%M:%S")
+    generated_at = datetime.datetime.now().strftime("(UTC) %Y-%m-%d %H:%M:%S")
 
     html_report = initialize_html()
     html_report += write_header()
