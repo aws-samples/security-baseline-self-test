@@ -50,13 +50,13 @@ def check_cloudwatch_alarm_configuration(session) -> common.CheckResult:
                 logging.error(traceback.format_exc())
                 ret.level = level.error
                 ret.msg = "일부 또는 전체 리전의 알림 구성조회에 실패했습니다."
-                ret.result_rows.append(region, 'ERR')
+                ret.result_rows.append([region, 'ERR'])
                 continue
             else:
                 if len(alarms) > 0:
                     is_alarm_exist = True
                     for alarm in alarms:
-                        ret.result_rows.append(region, alarm['AlarmName'])
+                        ret.result_rows.append([region, alarm['AlarmName']])
                 else:
                     pass
         
