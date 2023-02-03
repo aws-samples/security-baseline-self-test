@@ -1,17 +1,17 @@
-# What is a Security Baseline Self-Test application?
+# What is a Security Baseline Self-Test Script?
 > [공동 책임 모델](https://aws.amazon.com/ko/compliance/shared-responsibility-model/?nc1=h_ls)에 따라 AWS와 고객은 클라우드 보안에 대한 공동의 책임을 지닙니다. AWS는 클라우드에서 제공되는 모든 서비스를 실행하는 소프트웨어와 하드웨어를 포함한 인프라를 보호할 책임이 있습니다. 반면 고객은 이용하는 AWS 클라우드 서비스에서의 보안을 구성하고 관리할 책임을 가집니다.<br><br>
-> Security Baseline Self-Test Application 은 사용중인 `AWS 계정의 가장 기본적인 보안권고 사항에 대한 설정을 점검`하고, 그 `결과를 리포트로 제공`하는 AWS Sample Application 입니다.
+> Security Baseline Self-Test Script은 사용중인 `AWS 계정의 가장 기본적인 보안권고 사항에 대한 설정을 점검`하고, 그 `결과를 리포트로 제공`하는 Script 입니다.
 <br><br>
-이 Application 은 복잡한 아키텍처 구성이나 개발과정을 사용자가 직접 할 필요 없이 사전에 작성된 템플릿을 이용하여 계정에 자동으로 AWS 리소스를 생성하고 생성된 자원에 파이썬 코드를 자동으로 배포합니다.
+이 Script는 복잡한 아키텍처 구성이나 개발과정을 사용자가 직접 할 필요 없이 사전에 작성된 템플릿을 이용하여 계정에 자동으로 AWS 리소스를 생성하고 생성된 자원에 파이썬 코드를 자동으로 배포합니다.
 <br><br>
-사용자는 Application 에서 제공하는 API Endpoint 를 호출함으로써 간단하게 점검을 진행할 수 있으며, AWS 계정 보안과 워크로드 보안 등 15가지 항목들의 점검 결과를 확인하실 수 있습니다.
+사용자는 Script에서 제공하는 API Endpoint 를 호출함으로써 간단하게 점검을 진행할 수 있으며, AWS 계정 보안과 워크로드 보안 등 15가지 항목들의 점검 결과를 확인하실 수 있습니다.
 
 <br>
 
-# Who needs this application?
+# Who needs this Script?
 > 자신이 현재 사용하는 AWS 계정에 대한 보안권고 준수 상황을 간단하게 점검하고 싶은 고객이라면 누구나 사용하실 수 있습니다. 특히 AWS 를 처음 사용하는 분이나, 자신의 워크로드를 AWS 에서 구현하고 싶은 분에게 사용을 추천드립니다. 
 <br><br>
-또한 점검 리포트에는 적은 리소스로 AWS 보안 위협에 효과적으로 대처할 수 있는 방법들에 대해서도 안내하고 있으니, 보안에 많은 리소스를 투자하기 어려운 초기 스타트업에서도 이 Application 을 활용할 수 있습니다.
+또한 점검 리포트에는 적은 리소스로 AWS 보안 위협에 효과적으로 대처할 수 있는 방법들에 대해서도 안내하고 있으니, 보안에 많은 리소스를 투자하기 어려운 초기 스타트업에서도 이 Script 을 활용할 수 있습니다.
 
 <br>
 
@@ -20,7 +20,7 @@
 > ### [ Architecture ]<br>
 > ![architecture diagram](./images/architecture.png)
 >
-> Security Baseline Self-Test Application 은 다음과 같은 AWS Resource 를 자동으로 생성합니다.
+> Security Baseline Self-Test Script는 다음과 같은 AWS Resource 를 자동으로 생성합니다.
 > 
 > - Amazon API Gateway
 > - AWS Lambda Function 3개
@@ -42,17 +42,17 @@ AWS Resource 설정 정보에 대한 자세한 정보는 template.yaml 파일에
 
 <br>
 
-# How can I start this application?
+# How can I start this script?
 
 ### [ 사전 준비 ]
 
 <br>
 
-> - Application 배포가 가능한 AWS Account
-> - Application 을 계정에 배포할 수 있는 권한을 가진 IAM Entity (IAM User, IAM Role 등)
+> - Script 배포가 가능한 AWS Account
+> - Script를 계정에 배포할 수 있는 권한을 가진 IAM Entity (IAM User, IAM Role 등)
 > - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) 설치 및 구성
 > - [AWS Serverless Application Model CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) (AWS SAM CLI) 설치
-> - Application Package 가 업로드 될 S3 Bucket 생성 및 권한 설정. 자세한 권한은 아래 [S3 Bucket Policy] 참고
+> - SAM Package 가 업로드 될 S3 Bucket 생성 및 권한 설정. 자세한 권한은 아래 [S3 Bucket Policy] 참고
 
 <br>
 
@@ -81,7 +81,7 @@ AWS Resource 설정 정보에 대한 자세한 정보는 template.yaml 파일에
 <br>
 
 ### [ Package ]
-> Package 는 본 Application 의 코드, README, License 파일 등을 AWS S3 Bucket 으로 업로드하고, template.yaml 파일을 참고하여 Application 에서 필요한 리소스를 생성할 yaml 파일을 생성합니다. Package 과정에서 생성된 packaged.yaml 파일은 CloudFormation 에서 사용할 수 있습니다.
+> Package 는 본 script 의 코드, README, License 파일 등을 AWS S3 Bucket 으로 업로드하고, template.yaml 파일을 참고하여 script 에서 필요한 리소스를 생성할 yaml 파일을 생성합니다. Package 과정에서 생성된 packaged.yaml 파일은 CloudFormation 에서 사용할 수 있습니다.
 > 
 > AWS SAM CLI 를 이용하는 경우 아래의 명령어를 통해 package 를 진행해주시기 바랍니다.
 
@@ -96,13 +96,13 @@ sam package \
 
 > package가 정상적으로 생성되지 않을 경우, `--force-upload` 옵션을 명령에 추가해주세요.
 > 
-> 만약, 처음으로 application을 publish 를 하는 경우가 아닌 기존의 application 을 업데이트하고자 하는 경우에는 template.yaml의 Metadata 에서 SemanticVersion을 변경한 후 다시 진행하시면 됩니다.
+> 만약, 처음으로 script를 publish 를 하는 경우가 아닌 기존의 script를 업데이트하고자 하는 경우에는 template.yaml의 Metadata 에서 SemanticVersion을 변경한 후 다시 진행하시면 됩니다.
 
 <br>
 
 ### [ Publish ]
 
-> Publish 는 Package 된 Application 을 Serverless Application Repository에 게시하는 과정이며, 아래와 같이 두가지 방법으로 배포하실 수 있습니다.<br>
+> Publish 는 Package 된 script를 Serverless Application Repository에 게시하는 과정이며, 아래와 같이 두가지 방법으로 배포하실 수 있습니다.<br>
 <br>
  *방법 1) AWS SAM CLI*
 >
@@ -135,9 +135,9 @@ Application 을 선택하고 `API 만료일`, `점검 완료 알림을 받을 Em
 
 ### [ Run Application ]
 
-> 배포가 완료되면 [Amazon API Gateway Management Console](https://ap-northeast-2.console.aws.amazon.com/apigateway/home?region=ap-northeast-2) 의 API 목록에서 배포 완료된 application 의 API 를 확인하실 수 있습니다. 배포 과정에서 application 의 이름을 변경한 경우 아래 이미지와 다르게 보일 수 있습니다.<br><br>
+> 배포가 완료되면 [Amazon API Gateway Management Console](https://ap-northeast-2.console.aws.amazon.com/apigateway/home?region=ap-northeast-2) 의 API 목록에서 배포 완료된 script 의 API 를 확인하실 수 있습니다. 배포 과정에서 script 의 이름을 변경한 경우 아래 이미지와 다르게 보일 수 있습니다.<br><br>
 ![run_application_step1](./images/run_application_step1.png)<br><br>
-API 를 선택한 뒤 왼쪽 메뉴에서 `Stages` 메뉴를 선택하고 Prod Stage 를 선택하면 Prod Stage Editor 화면과 함께 `Invoke URL` 을 확인하실 수 있습니다. `Invoke URL` 을 클릭하시면 application 이 실행됩니다. <br><br>_<U>`이 URL 이 외부에 노출되는 경우 불필요한 추가비용이 발생할 수 있으니 안전하게 관리해주세요.`</U>_<br><br>
+API 를 선택한 뒤 왼쪽 메뉴에서 `Stages` 메뉴를 선택하고 Prod Stage 를 선택하면 Prod Stage Editor 화면과 함께 `Invoke URL` 을 확인하실 수 있습니다. `Invoke URL` 을 클릭하시면 script가 실행됩니다. <br><br>_<U>`이 URL 이 외부에 노출되는 경우 불필요한 추가비용이 발생할 수 있으니 안전하게 관리해주세요.`</U>_<br><br>
 ![run_application_step1](./images/run_application_step2.png)<br><br>
 
 ### [ Result Email Sample ]
@@ -148,8 +148,8 @@ API 를 선택한 뒤 왼쪽 메뉴에서 `Stages` 메뉴를 선택하고 Prod S
 > ![report_sample](./images/report_sample.png)<br><br>
 
 # FAQ
-> *- Application 유지 비용이 발생하나요?*<br>
-`Application 을 사용하지 않는다면 유지 비용은 발생하지 않습니다.` 또한 매일 한번씩 한달간 점검을 진행한다고 가정할 때, $0.1 이하의 비용이 발생할 것으로 예상됩니다. 단, S3 Bucket 에 저장하는 데이터의 용량이 많아질 경우 추가적인 비용이 발생할 수 있습니다.
+> *- Script 유지 비용이 발생하나요?*<br>
+`Script를 사용하지 않는다면 유지 비용은 발생하지 않습니다.` 또한 매일 한번씩 한달간 점검을 진행한다고 가정할 때, $0.1 이하의 비용이 발생할 것으로 예상됩니다. 단, S3 Bucket 에 저장하는 데이터의 용량이 많아질 경우 추가적인 비용이 발생할 수 있습니다.
 >
 > <br>
 > 
