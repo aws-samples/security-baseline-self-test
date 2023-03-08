@@ -1,5 +1,5 @@
 from checklist import *
-from lib import level_const
+from lib import level_const, language
 import datetime
 
 def initialize_html():
@@ -423,7 +423,7 @@ def write_error_result(result, item_number) -> tuple:
                 <h2 class="accordion-header" id="panelsStayOpen-heading{item_number}">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{item_number}" aria-expanded="true" aria-controls="panelsStayOpen-collapse{item_number}">
                     <span class="badge text-bg-dark rounded-pill">Failed</span>
-                    <div class="ms-2 me-auto">진단 실패 항목</div>
+                    <div class="ms-2 me-auto">Test Failed Items</div>
                 </button>
                 </h2>
                 <div id="panelsStayOpen-collapse{item_number}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading{item_number}">
@@ -433,7 +433,7 @@ def write_error_result(result, item_number) -> tuple:
                         <svg aria-label="Failed:" class="bi flex-shrink-0 me-2" width="24" height="24" role="img">
                             <use xlink:href="#info-fill"></use>
                         </svg>
-                        <span>진단 실패 항목이 없습니다.<span>
+                        <span>No Item<span>
                     </div>
                 </div>
             </div>
@@ -493,7 +493,7 @@ def write_error_result(result, item_number) -> tuple:
 
     return item_number, html
 
-def finalize_html():
+def finalize_html_korean():
     return '''
                 <div class="row">
                 <div class="alert alert-primary d-flex align-items-center" role="alert"><svg aria-label="Info:"
@@ -536,7 +536,42 @@ def finalize_html():
 
     </html>'''
 
-def generate_html_report(account_id_str, result_sort_by_level):
+def finalize_html_english():
+    return '''
+                <div class="row">
+                <div class="alert alert-primary d-flex align-items-center" role="alert"><svg aria-label="Info:"
+                        class="bi flex-shrink-0 me-2" width="24" height="24" role="img">
+                        <use xlink:href="#info-fill"></use>
+                    </svg>
+                    <span><a href="https://aws.amazon.com/blogs/aws/aws-trusted-advisor-new-priority-capability/" target="_blank" style="overflow:hidden;word-break:break-all;">AWS Trusted Advisor</a> is a service that continuously analyzes your AWS accounts and provides recommendations to help you to follow AWS best practices and AWS Well-Architected guidelines.</span>
+                </div>
+                </div>
+                <div class="row">
+                <div class="alert alert-primary d-flex align-items-center" role="alert"><svg aria-label="Info:"
+                        class="bi flex-shrink-0 me-2" width="24" height="24" role="img">
+                        <use xlink:href="#info-fill"></use>
+                    </svg>
+                    <span>Please <a href="https://aws.amazon.com/premiumsupport/knowledge-center/trusted-advisor-intro/?nc1=h_ls" target="_blank" style="overflow:hidden;word-break:break-all;">click</a> this link whether you want to know more details about AWS Trusted Advisor.</span>
+                </div>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+        </div>
+        <script>
+            function click_summary(x){
+                if(x.className === "accordion-button collapsed"){
+                    x.click()
+                }
+            }
+        
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+
+    </html>'''
+
+def generate_html_report(account_id_str, result_sort_by_level, selected_language):
     
     generated_at = datetime.datetime.now().strftime("(UTC) %Y-%m-%d %H:%M:%S")
 
@@ -554,6 +589,9 @@ def generate_html_report(account_id_str, result_sort_by_level):
     item_index, error_html = write_error_result(result_sort_by_level, item_index)
 
     html_report += danger_html + warning_html + success_html + info_html + error_html
-    html_report += finalize_html()
+    if selected_language == language.LANGUAGE_CODE.ENGLISH.value:
+        html_report += finalize_html_english()
+    elif selected_language == language.LANGUAGE_CODE.KOREAN.value:
+        html_report += finalize_html_korean()
 
     return html_report

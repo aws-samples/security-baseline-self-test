@@ -1,16 +1,20 @@
-from lib import common
+from lib import common, language
 from lib import level_const as level
 
-def check_root_mfa_setting(credential_report) -> common.CheckResult:
+def check_root_mfa_setting(credential_report, selected_language) -> common.CheckResult:
+
+    translator = language.translation("root_mfa", selected_language)
+    
+    print(translator.checking())
 
     ret = common.CheckResult()
 
-    ret.title = "루트 계정 MFA 설정 여부 확인"
-    ret.result_cols = ['MFA 설정']
+    ret.title = translator.title()
+    ret.result_cols = ['MFA Setting']
 
     if len(credential_report) == 0:
         ret.level = level.error
-        ret.msg = "Credential Report 생성이 실패했습니다."
+        ret.msg = "Failed to generate credential report."
         ret.result_rows.append(['ERR'])
         return ret
 
@@ -20,10 +24,10 @@ def check_root_mfa_setting(credential_report) -> common.CheckResult:
 
     if mfa_status == "TRUE":
         ret.level = level.success
-        ret.msg = "루트 계정에 MFA가 설정되어 있습니다."
+        ret.msg = translator.success()
     else :
         ret.level = level.danger  
-        ret.msg = '''루트 계정에 설정된 MFA가 없습니다.&nbsp<a href="https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html" target="_blank" style="overflow:hidden;word-break:break-all;">링크</a>를 눌러 설정방법을 확인해주세요.'''
+        ret.msg = translator.danger()
     
     ret.result_rows.append([mfa_status])
 

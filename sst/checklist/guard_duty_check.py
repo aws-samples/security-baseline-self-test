@@ -1,4 +1,4 @@
-from lib import common
+from lib import common, language
 from lib import level_const as level
 import botocore.exceptions
 from concurrent.futures import ThreadPoolExecutor
@@ -20,11 +20,16 @@ def get_guard_duty_configuration(client, region) -> tuple:
     else:
         return region, len(detectors)
 
-def check_guard_duty_enabled(session) -> common.CheckResult:
+def check_guard_duty_enabled(session, selected_language) -> common.CheckResult:
+
+    translator = language.translation("guardduty_enabled", selected_language)
+
+    print(translator.checking())
+    
     ret = common.CheckResult()
 
-    ret.title = "GuardDuty 를 사용하도록 설정했는지 확인"
-    ret.result_cols = ['Region', 'GuardDuty 설정']
+    ret.title = translator.title()
+    ret.result_cols = ['Region', 'GuardDuty Setting']
 
     ec2_client = session.client('ec2')
 
@@ -32,7 +37,7 @@ def check_guard_duty_enabled(session) -> common.CheckResult:
         regions = common.get_opted_in_regions(ec2_client)
     except botocore.exceptions.ClientError as e:
         ret.level = level.error
-        ret.msg = "예기치 못한 에러가 발생했습니다."
+        ret.msg = "Unexpected Error"
         ret.result_rows.append(['ERR', 'ERR'])
         return ret
     else:
@@ -53,18 +58,18 @@ def check_guard_duty_enabled(session) -> common.CheckResult:
 
             if number_of_detectors == "ERR":
                 ret.level = level.error
-                ret.msg = "일부 또는 전체 리전의 GuardDuty 상태정보를 가져오는데 실패했습니다."
+                ret.msg = "Failed to retrieve GuardDuty status from some regions."
                 ret.result_rows.append([region, "ERR"])
             elif number_of_detectors > 0:
                 nums_of_guardduty_enabled += 1
-                ret.result_rows.append([region, "활성"])
+                ret.result_rows.append([region, "Activated"])
             else:
-                ret.result_rows.append([region, "비활성"])
+                ret.result_rows.append([region, "Inactivated"])
 
         ret.level = level.info
         if nums_of_guardduty_enabled > 0:
-            ret.msg = "한개 이상의 리전에 GuardDuty가 활성화 되어 있습니다."
+            ret.msg = translator.is_activated()
         else:
-            ret.msg = "GuardDuty가 활성화 된 리전이 없습니다."
+            ret.msg = translator.is_not_activated()
 
         return ret

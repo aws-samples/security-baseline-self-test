@@ -1,4 +1,4 @@
-from lib import common
+from lib import common, language
 from lib import level_const as level
 import botocore.exceptions
 from concurrent.futures import ThreadPoolExecutor
@@ -11,7 +11,7 @@ def get_bucket_info(client, bucket_name) -> tuple:
         bucket_info = client.get_public_access_block(Bucket=bucket_name)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'NoSuchPublicAccessBlockConfiguration':
-            return level.danger, [bucket_name, "모두 허용"]
+            return level.danger, [bucket_name, "All Allowed"]
         else:
             logging.error(logging.error(traceback.format_exc()))
             return level.error, [bucket_name, "ERR"]
@@ -26,19 +26,23 @@ def get_bucket_info(client, bucket_name) -> tuple:
                 continue
 
         if public_access_block_policy_counter == 0:
-            return level.danger, [bucket_name, "모두 허용"]
+            return level.danger, [bucket_name, "All Allowed"]
         elif public_access_block_policy_counter > 0 and public_access_block_policy_counter < nums_of_public_access_block_policies:
-            return level.warning, [bucket_name, "일부 허용"]
+            return level.warning, [bucket_name, "Partially Allowed"]
         elif public_access_block_policy_counter == nums_of_public_access_block_policies:
-            return level.success, [bucket_name, "모두 차단"]
+            return level.success, [bucket_name, "All Blocked"]
         else :
-            return level.error, [bucket_name, "예상치 못한 문제가 발생했습니다."]
+            return level.error, [bucket_name, "UnExpected Exception"]
 
-def check_bucket_public_access(session) -> common.CheckResult:
+def check_bucket_public_access(session, selected_language) -> common.CheckResult:
+
+    translator = language.translation("bucket_public_access", selected_language)
+
+    print(translator.checking())
 
     ret = common.CheckResult()
 
-    ret.title = "개별 Bucket 수준 S3 Bucket Public Access 설정 확인"
+    ret.title = translator.title()
     ret.result_cols = ['Bucket Name', 'Public Access Setting']
 
     s3_client = session.client('s3')
@@ -49,7 +53,7 @@ def check_bucket_public_access(session) -> common.CheckResult:
     except botocore.exceptions.ClientError:
         logging.error(traceback.format_exc())
         ret.level = level.error
-        ret.msg = "예기치 못한 에러가 발생했습니다."
+        ret.msg = "Unexpected Error"
         ret.result_rows.append(['ERR', 'ERR'])
         return ret
     else:
@@ -84,16 +88,16 @@ def check_bucket_public_access(session) -> common.CheckResult:
             ret.result_rows.append(result)
 
         if level_flag == level.success:
-            ret.msg = "S3 Bucket의 Public Access 정책이 모두 차단되어 있습니다."
+            ret.msg = translator.success()
         elif level_flag == level.warning:
-            ret.msg = "S3 Bucket Public Access 정책이 일부 허용되어 있습니다. 차단하는 것이 보다 안전합니다."
+            ret.msg = translator.warning()
         elif level_flag == level.danger:
-            ret.msg = "S3 Bucket Public Access 정책이 모두 허용되어 있습니다. 차단하는 것이 보다 안전합니다."
+            ret.msg = translator.danger()
         else:
             if len(bucket_list) > 1000:
-                ret.msg = "최대 점검가능한 버킷 수({MAXIMUM_NUMBER_OF_BUCKET_LIMIT})을 초과했습니다. 점검이 되지 않은 버킷은 수동으로 점검하시거나 AWS Trusted Advisor를 이용해주세요.".format(MAXIMUM_NUMBER_OF_BUCKET_LIMIT=MAXIMUM_NUMBER_OF_BUCKET_LIMIT)
+                ret.msg = translator.bucket_limit_warning(MAXIMUM_NUMBER_OF_BUCKET_LIMIT)
             else:
-                ret.msg = "잘못된 요청입니다."
+                ret.msg = "Invalid Request"
 
         ret.level = level_flag
 

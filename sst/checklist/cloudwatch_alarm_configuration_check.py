@@ -1,4 +1,4 @@
-from lib import common
+from lib import common, language
 from lib import level_const as level
 import botocore.exceptions
 from concurrent.futures import ThreadPoolExecutor
@@ -16,10 +16,14 @@ def get_cloudwatch_alarms(client, region) -> tuple:
     else:
         return region, alarms
 
-def check_cloudwatch_alarm_configuration(session) -> common.CheckResult:
+def check_cloudwatch_alarm_configuration(session, selected_language) -> common.CheckResult:
+
+    translator = language.translation("cloudwatch_alarm_configuation", selected_language)
+
+    print(translator.checking())
     ret = common.CheckResult()
 
-    ret.title = "CloudWatch에 중요 이벤트 알림 설정 확인"
+    ret.title = translator.title()
     ret.result_cols = ['Region', 'Name']
 
     ec2_client = session.client('ec2')
@@ -29,7 +33,7 @@ def check_cloudwatch_alarm_configuration(session) -> common.CheckResult:
     except botocore.exceptions.ClientError as e:
         logging.error(traceback.format_exc())
         ret.level = level.error
-        ret.msg = "예기치 못한 에러가 발생했습니다."
+        ret.msg = "Unexpected Error"
         ret.result_rows.append(['ERR', 'ERR'])
         return ret
     else:
@@ -49,7 +53,7 @@ def check_cloudwatch_alarm_configuration(session) -> common.CheckResult:
             if alarms == "ERR":
                 logging.error(traceback.format_exc())
                 ret.level = level.error
-                ret.msg = "일부 또는 전체 리전의 알림 구성조회에 실패했습니다."
+                ret.msg = "Failed to retrieve alarm configurations in some or all regions."
                 ret.result_rows.append([region, 'ERR'])
                 continue
             else:
@@ -62,9 +66,9 @@ def check_cloudwatch_alarm_configuration(session) -> common.CheckResult:
         
         if is_alarm_exist == True:
             ret.level = level.success
-            ret.msg = "CloudWatch 알림이 구성되어 있습니다. 비용 알림, 루트 계정 활동 알림이 있는지 확인해주세요."
+            ret.msg = translator.alarm_exist()
         else:
             ret.level = level.warning
-            ret.msg = '''CloudWatch 알림이 구성되어 있지 않습니다. &nbsp<a href="https://catalog.workshops.aws/startup-security-baseline/en-US/b-securing-your-account/7-configurealarms" target="_blank" style="overflow:hidden;word-break:break-all;">워크샵</a>을 통해 비용 알림, 루트 계정 활동 알림을 설정해보세요.'''
+            ret.msg = translator.alarm_not_exist()
 
     return ret

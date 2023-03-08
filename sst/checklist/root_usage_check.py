@@ -1,4 +1,4 @@
-from lib import common
+from lib import common, language
 from lib import level_const as level
 from datetime import datetime, timedelta
 
@@ -11,22 +11,25 @@ def get_root_access_days(date) -> timedelta:
 def get_message(last_used_timedelta) -> str:
     if last_used_timedelta < timedelta(9999):
         if last_used_timedelta.days == 0:
-            return "오늘"
+            return "Today"
         else:
-            return "{last_used_timedelta} 일 전".format(last_used_timedelta=str(last_used_timedelta.days))
+            return "{last_used_timedelta} days before".format(last_used_timedelta=str(last_used_timedelta.days))
     else:
-        return "사용 이력이 없습니다."
+        return "No history"
 
-def check_root_usage(credential_report) -> common.CheckResult:
+def check_root_usage(credential_report, selected_language) -> common.CheckResult:
 
+    translator = language.translation("root_usage_check", selected_language)
+
+    print(translator.checking())
     ret = common.CheckResult()
 
-    ret.title = "루트 계정 Access 확인"
-    ret.result_cols = ['자격증명 유형','최근접속일']
+    ret.title = translator.title()
+    ret.result_cols = ['Credential Type','Last Access Date']
 
     if len(credential_report) == 0:
         ret.level = level.error
-        ret.msg = "Credential Report 생성이 실패했습니다."
+        ret.msg = "Failed to generate credential report"
         ret.result_rows.append(['ERR'])
         return ret
 
@@ -42,13 +45,13 @@ def check_root_usage(credential_report) -> common.CheckResult:
 
     if last_access_days > timedelta(ROOT_ACCESS_DAYS_STANDARD):
         ret.level = level.success
-        ret.msg = "최근 {standard_root_access_date} 이내에 루트 계정 사용이력이 없습니다.".format(standard_root_access_date=str(ROOT_ACCESS_DAYS_STANDARD))
+        ret.msg = translator.success(ROOT_ACCESS_DAYS_STANDARD)
     else :
         ret.level = level.danger
         if last_access_days.days == 0:
-            ret.msg = "오늘 날짜의 루트 계정 사용이력이 존재합니다. 다른 자격증명으로 AWS 서비스를 이용해주세요."
+            ret.msg = translator.access_today()
         else:
-            ret.msg = "최근 {last_access_days} 이내에 루트 계정 사용이력이 존재합니다. 다른 자격증명으로 AWS 서비스를 이용해주세요.".format(last_access_days=str(last_access_days.days))
+            ret.msg = translator.danger(last_access_days.days)
 
     ret.result_rows.append(["PASSWORD", get_message(password_last_used_days)])
     ret.result_rows.append(["ACCESS KEY1", get_message(access_key1_last_used_days)])

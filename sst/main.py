@@ -1,11 +1,12 @@
-import boto3
+import boto3, botocore
 from checklist import *
-from lib import common, level_const
+from lib import common, level_const, language
 from concurrent.futures import ThreadPoolExecutor
 import concurrent.futures
 import report_generator
-import os, datetime, json
+import datetime
 import logging, traceback
+import sys
 
 def execute_test(session) -> tuple:
 
@@ -14,6 +15,8 @@ def execute_test(session) -> tuple:
 
     account_id_str = common.get_account_id(sts_client)
 
+    selected_language = translator.language
+    print(translator.request_credential_report())
     credential_report = common.generate_credential_report(iam_client)
 
     number_of_whole_test_case = 15
@@ -21,21 +24,21 @@ def execute_test(session) -> tuple:
     thread_executor = ThreadPoolExecutor()
     futures = [0 for x in range(number_of_whole_test_case)]
 
-    futures[common.CHECKLIST_INDEX_CONST.ROOT_MFA_SETTING_CHECK.value] = thread_executor.submit(root_mfa_setting_check.check_root_mfa_setting,credential_report)
-    futures[common.CHECKLIST_INDEX_CONST.ROOT_USAGE_CHECK.value] = thread_executor.submit(root_usage_check.check_root_usage,credential_report)
-    futures[common.CHECKLIST_INDEX_CONST.ROOT_CREDENTIAL_CHECK.value] = thread_executor.submit(root_user_accesskey_check.check_root_accesskey_usage,credential_report)
-    futures[common.CHECKLIST_INDEX_CONST.IAM_MFA_SETTING_CHECK.value] = thread_executor.submit(iam_user_mfa_setting_check.check_iam_user_mfa_setting,credential_report)
-    futures[common.CHECKLIST_INDEX_CONST.IAM_PASSWORD_POLICY_CHECK.value] = thread_executor.submit(iam_password_policy_check.check_iam_password_policy, session)
-    futures[common.CHECKLIST_INDEX_CONST.NON_GROUP_POLICY_CHECK.value] = thread_executor.submit(direct_attached_policy_check.check_iam_direct_attached_policy, session)
-    futures[common.CHECKLIST_INDEX_CONST.ALTERNATE_CONTACT_CHECK.value] = thread_executor.submit(alternate_contact_check.check_alternate_contact_filling, session)
-    futures[common.CHECKLIST_INDEX_CONST.TRAIL_ENABLED_CHECK.value] = thread_executor.submit(trail_enabled_check.check_trail_enabled, session)
-    futures[common.CHECKLIST_INDEX_CONST.MULTIREGION_TRAIL_CHECK.value] = thread_executor.submit(multiregion_trail_enabled_check.check_multi_retion_trail_enabled, session)
-    futures[common.CHECKLIST_INDEX_CONST.ACCOUNT_LEVEL_BUCKET_PUBLIC_ACCESS_CHECK.value] = thread_executor.submit(account_level_bucket_public_access_check.check_account_level_bucket_public_access, session)
-    futures[common.CHECKLIST_INDEX_CONST.BUCKET_LEVEL_PUBLIC_ACCESS_CHECK.value] = thread_executor.submit(bucket_public_access_check.check_bucket_public_access, session)
-    futures[common.CHECKLIST_INDEX_CONST.CLOUDWATCH_ALARM_CONFIGURATION_CHECK.value] = thread_executor.submit(cloudwatch_alarm_configuration_check.check_cloudwatch_alarm_configuration, session)
-    futures[common.CHECKLIST_INDEX_CONST.MULTIREGION_INSTANCE_USAGE_CHECK.value] = thread_executor.submit(multiregion_instance_usage_check.check_multiregion_instance_usage, session)
-    futures[common.CHECKLIST_INDEX_CONST.GUARD_DUTY_ENABLED_CHECK.value] = thread_executor.submit(guard_duty_check.check_guard_duty_enabled, session)
-    futures[common.CHECKLIST_INDEX_CONST.TRUST_ADVISOR_CHECK.value] = thread_executor.submit(trust_advisor_check.check_trust_advisor_configuration)
+    futures[common.CHECKLIST_INDEX_CONST.ROOT_MFA_SETTING_CHECK.value] = thread_executor.submit(root_mfa_setting_check.check_root_mfa_setting,credential_report, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.ROOT_USAGE_CHECK.value] = thread_executor.submit(root_usage_check.check_root_usage,credential_report, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.ROOT_CREDENTIAL_CHECK.value] = thread_executor.submit(root_user_accesskey_check.check_root_accesskey_usage,credential_report, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.IAM_MFA_SETTING_CHECK.value] = thread_executor.submit(iam_user_mfa_setting_check.check_iam_user_mfa_setting,credential_report, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.IAM_PASSWORD_POLICY_CHECK.value] = thread_executor.submit(iam_password_policy_check.check_iam_password_policy, session, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.NON_GROUP_POLICY_CHECK.value] = thread_executor.submit(direct_attached_policy_check.check_iam_direct_attached_policy, session, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.ALTERNATE_CONTACT_CHECK.value] = thread_executor.submit(alternate_contact_check.check_alternate_contact_filling, session, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.TRAIL_ENABLED_CHECK.value] = thread_executor.submit(trail_enabled_check.check_trail_enabled, session, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.MULTIREGION_TRAIL_CHECK.value] = thread_executor.submit(multiregion_trail_enabled_check.check_multi_retion_trail_enabled, session, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.ACCOUNT_LEVEL_BUCKET_PUBLIC_ACCESS_CHECK.value] = thread_executor.submit(account_level_bucket_public_access_check.check_account_level_bucket_public_access, session, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.BUCKET_LEVEL_PUBLIC_ACCESS_CHECK.value] = thread_executor.submit(bucket_public_access_check.check_bucket_public_access, session, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.CLOUDWATCH_ALARM_CONFIGURATION_CHECK.value] = thread_executor.submit(cloudwatch_alarm_configuration_check.check_cloudwatch_alarm_configuration, session, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.MULTIREGION_INSTANCE_USAGE_CHECK.value] = thread_executor.submit(multiregion_instance_usage_check.check_multiregion_instance_usage, session, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.GUARD_DUTY_ENABLED_CHECK.value] = thread_executor.submit(guard_duty_check.check_guard_duty_enabled, session, selected_language)
+    futures[common.CHECKLIST_INDEX_CONST.TRUST_ADVISOR_CHECK.value] = thread_executor.submit(trust_advisor_check.check_trust_advisor_configuration, selected_language)
 
     result_sort_by_level = {
         level_const.danger:[],
@@ -51,67 +54,100 @@ def execute_test(session) -> tuple:
 
     return account_id_str, result_sort_by_level
 
-def put_report_to_bucket(bucket_name, html_report, sns_topic) -> common.Ret:
+## Scrypt Start From Here
 
-    ret = common.Ret()
+ret = common.Ret()
 
-    send_email_function = os.environ["EmailReport"].split(":")[-1]
-    
-    s3_client = boto3.client('s3')
-    report_object_name = "security-self-testresult-{generated_date}.html".format(generated_date=datetime.datetime.now().strftime("%Y-%m-%d_h%Hm%Ms%S"))
-    encoded = bytes(html_report.encode('UTF-8'))
-
-    lambda_client = boto3.client('lambda')
-
-    try:
-        s3_client.put_object(Bucket=bucket_name, Key=report_object_name, Body=encoded)
-    except Exception as e:
-        logging.error(traceback.format_exc())
-
-        sns_client = boto3.client('sns')
-        sns_client.publish(TopicArn=sns_topic, Message='''S3 Bucket 에 리포트를 업로드하던 중 예기치 못한 에러가 발생했습니다.({error})'''.format(error=e))
-
-        ret.status_code = 500
-        ret.body = '''InternalException'''
-    else:
-        try:
-            payload = {"ObjectName":report_object_name}
-            lambda_client.invoke(FunctionName=send_email_function, InvocationType='Event', Payload=json.dumps(payload))
-        except Exception as e:
-            logging.error(traceback.format_exc())
-
-            sns_client = boto3.client('sns')
-            sns_client.publish(TopicArn=sns_topic, Message='''점검 결과 발신 함수를 실행하는 도중 예기치 못한 에러가 발생했습니다.({error})'''.format(error=e))
-
-            ret.status_code = 500
-            ret.body = '''InternalException'''
-
-    return ret
-
-def lambda_handler(event, context) -> common.Ret:
-
-    logging.info('Invoked')
-
-    ret = common.Ret()
-
+if len(sys.argv) == 1:
+    print("AWS Credential : Default Profile")
     session = boto3.Session()
-    sns_topic = os.environ["Topic"]
-    bucket_name = os.environ["Bucket"][13:]
+elif len(sys.argv) == 2:
+    aws_profile = sys.argv[1]
+    print("AWS Credentials : ${profile}".format(profile=aws_profile))
+    session = boto3.Session(profile_name=aws_profile)
+else:
+    print("usage: python3 main.py <(optional) profile name>")
+    exit()
 
+sts_client = session.client('sts')
+selected_language = ""
+
+while True:
+    print("==================================================")
+    print("#### Select Language ####")
+    print("1. English")
+    print("2. Korean")
+    print("0. EXIT")
+    
+    selected_language = input("Select Your Language : ")
+    print("==================================================")
+
+    if selected_language == '1':
+        selected_language = language.LANGUAGE_CODE.ENGLISH.value
+        break
+    elif selected_language == '2':
+        selected_language = language.LANGUAGE_CODE.KOREAN.value
+        break
+    elif selected_language == '0':
+        exit()
+    else:
+        print("Invalid Input. Please Select Valid Number.")
+
+global translator
+translator = language.translation("main", selected_language)
+
+try:
+    caller_identity = sts_client.get_caller_identity()
+    
+    user_id = caller_identity['UserId']
+    account = caller_identity['Account']
+    arn = caller_identity['Arn']
+
+    iam_client = session.client('iam')
+
+    IAM_USER_IDENTIFIER_PREFIX = "AIDA"
+    
+    if user_id[:4] != IAM_USER_IDENTIFIER_PREFIX:
+        print(translator.invalid_iam_entity())
+        exit()
+
+    else :
+        print(translator.start_test())
+
+except botocore.exceptions.ClientError as e:
+    if e.response['Error']['Code'] == 'AccessDenied':
+        print("Please Check IAM Permission. (sts:GetCallerIdentity is required)")
+        logging.error(traceback.format_exc())
+    else :
+        print("UnexpectedException")
+        logging.error(traceback.format_exc())
+    exit()
+except Exception as e:
+    logging.error(traceback.format_exc())
+    exit()
+
+try:
+    account_id_str, result_sort_by_level = execute_test(session)
+
+    print(translator.generate_result_report())
+    html_report = report_generator.generate_html_report(account_id_str, result_sort_by_level, selected_language)
+except Exception as e:
+    logging.error(traceback.format_exc())
+
+    ret.status_code = 500
+    ret.body = '''InternalException'''
+else:
+    report_object_name = "security-self-testresult-{generated_date}.html".format(generated_date=datetime.datetime.now().strftime("%Y-%m-%d_h%Hm%Ms%S"))
+    f = open(report_object_name, "wt")
     try:
-        account_id_str, result_sort_by_level = execute_test(session)
-        html_report = report_generator.generate_html_report(account_id_str, result_sort_by_level)
-    except Exception as e:
+        f.write(html_report)
+    except IOError as e:
         logging.error(traceback.format_exc())
 
-        sns_client = boto3.client('sns')
-        sns_client.publish(TopicArn=sns_topic, Message='''Security Self-Test 진행 중 예기치 못한 에러가 발생했습니다.({error})'''.format(error=e))
-
-        ret.status_code = 500
+        ret.status_code=500
         ret.body = '''InternalException'''
-    else:
-        ret = put_report_to_bucket(bucket_name, html_report, sns_topic)
 
-    logging.info('Successfully Finished')
-
-    return ret.to_dict()
+    f.close()
+    
+print("Finish")
+logging.info('Successfully Finished')

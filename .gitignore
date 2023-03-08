@@ -1,2 +1,5 @@
 .DS_Store
-packaged.yaml
+*.html
+.venv
+*.pyc
+ssb-env

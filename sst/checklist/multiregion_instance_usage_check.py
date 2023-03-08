@@ -1,4 +1,4 @@
-from lib import common
+from lib import common, language
 from lib import level_const as level
 import botocore.exceptions
 from concurrent.futures import ThreadPoolExecutor
@@ -18,12 +18,16 @@ def get_instance_usage_by_region(client, region) -> tuple:
     else:
         return region, str(number_of_instances)
 
-def check_multiregion_instance_usage(session) -> common.CheckResult:
+def check_multiregion_instance_usage(session, selected_language) -> common.CheckResult:
+
+    translator = language.translation("multi_region_instance_usage", selected_language)
+
+    print(translator.checking())
 
     ret = common.CheckResult()
 
-    ret.title = "리전 별 사용중인 인스턴스 수"
-    ret.result_cols = ['Region', '사용중인 인스턴스 수']
+    ret.title = translator.title()
+    ret.result_cols = ['Region', 'instance usage']
 
     ec2_client = session.client('ec2')
 
@@ -32,7 +36,7 @@ def check_multiregion_instance_usage(session) -> common.CheckResult:
     except botocore.exceptions.ClientError:
         logging.error(traceback.format_exc())
         ret.level = level.error
-        ret.msg = "예기치 못한 에러가 발생했습니다."
+        ret.msg = "Unexpected Error"
         ret.result_rows.append(['ERR', 'ERR'])
         return ret
     else:
@@ -46,13 +50,13 @@ def check_multiregion_instance_usage(session) -> common.CheckResult:
 
         ret.result_rows = []
         ret.level = level.info
-        ret.msg = '''리전별 인스턴스 사용현황을 확인해주세요.&nbsp<a href="https://us-east-1.console.aws.amazon.com/ec2globalview/home" target="_blank" style="overflow:hidden;word-break:break-all;">EC2 Global View</a> 를 이용하여 확인할 수 있습니다.'''
+        ret.msg = translator.info_msg()
         for future in concurrent.futures.as_completed(futures):
             region, number_of_instance = future.result()
 
             if number_of_instance == "ERR":
                 ret.level = level.error
-                ret.msg = "리전별 인스턴스 정보를 조회하는 중 예기치못한 에러가 발생했습니다."
+                ret.msg = "Unexpected Error"
             else:
                 pass
             

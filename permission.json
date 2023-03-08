@@ -1,0 +1,36 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "SSBUserPermission",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GenerateCredentialReport",
+                "s3:GetBucketPublicAccessBlock",
+                "iam:GetAccountPasswordPolicy",
+                "cloudtrail:GetTrail",
+                "ec2:DescribeInstances",
+                "guardduty:ListDetectors",
+                "cloudtrail:GetTrailStatus",
+                "account:GetAlternateContact",
+                "ec2:DescribeRegions",
+                "s3:ListBucket",
+                "iam:ListUserPolicies",
+                "support:DescribeTrustedAdvisorChecks",
+                "guardduty:GetDetector",
+                "cloudtrail:DescribeTrails",
+                "s3:GetAccountPublicAccessBlock",
+                "s3:ListAllMyBuckets",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribeVpcs",
+                "iam:ListAttachedUserPolicies",
+                "cloudwatch:DescribeAlarms",
+                "iam:ListUsers",
+                "sts:GetCallerIdentity",
+                "iam:GetCredentialReport",
+                "ec2:DescribeSubnets"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
