@@ -1,3 +1,150 @@
+# Language
+1. [English](#english)
+2. [한국어](#korean)
+
+<br>
+<br>
+
+# English
+# What is a Security Baseline Self-Test Script?
+> According to the [Shared Responsibility Model](https://aws.amazon.com/compliance/shared-responsibility-model/?nc1=h_ls), AWS and customers share the responsibility on security. AWS is responsible for protecting the infrastructure, such as software and hardware that executes all services offered on the cloud. On the other hand, customers have the responsibility to configure and manage the security upon using the AWS cloud services.<br><br>
+> Security Baseline Self-Test Application is the `AWS sample application that carries out an examination of the account set-up based on basic security advisories and provide a report as a result.`
+<br><br>
+Users can simply run Script to perform a security check on AWS accounts and check the results of 15 items, including AWS account security and workload security.
+
+<br>
+
+# Who needs this Script?
+> Any AWS customers who would like to get their accounts examined to see if they are observing the basic security advisories will benefit from using this application. We would like to recommend this application especially to first-time AWS users or others who would like to implement their workloads on AWS.   
+<br>
+On the test report, we are providing multiple ways to effectively respond to security threats on AWS with minimal resources. This makes even early-stage startups who cannot invest much resource on their security suitable for using this application. 
+
+<br>
+
+# How can I start this script?
+
+### [PreRequirement]
+
+<br>
+
+> - install python3
+> - install git
+> - install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+
+### [Create an IAM account with permissions]
+<br>
+
+> First, create an IAM user from the account you want to check.
+>
+> 1. On the Console Home page, select the IAM service.
+> 2. In the navigation pane, select Users and then select Add users.
+> 3. On the Specify user details page, under User details, in User name, enter the name for the new user. This is their sign-in name for AWS.
+> 4. Fill in user name and go to the next.
+> 5. On the Set permissions page, specify how you want to assign permissions for this user. Select one of the "Attach policies directly" option.
+> 6. Select "Create Policy" and please copy and use the IAM user permission policy below on the JSON tab.
+>
+> Tip) The permissions of the IAM user below consist of read-only permissions, except for the permission to generate IAM Credential Reports to check the security settings of the Root Account and IAM User, so you only perform diagnostics without changing the existing settings. <br> Detailed permission definitions are as follows and are defined in the file [permission.json] (./permission.json).
+```bash
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "SSBUserPermission",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GenerateCredentialReport",
+                "s3:GetBucketPublicAccessBlock",
+                "iam:GetAccountPasswordPolicy",
+                "cloudtrail:GetTrail",
+                "ec2:DescribeInstances",
+                "guardduty:ListDetectors",
+                "cloudtrail:GetTrailStatus",
+                "account:GetAlternateContact",
+                "ec2:DescribeRegions",
+                "s3:ListBucket",
+                "iam:ListUserPolicies",
+                "support:DescribeTrustedAdvisorChecks",
+                "guardduty:GetDetector",
+                "cloudtrail:DescribeTrails",
+                "s3:GetAccountPublicAccessBlock",
+                "s3:ListAllMyBuckets",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribeVpcs",
+                "iam:ListAttachedUserPolicies",
+                "cloudwatch:DescribeAlarms",
+                "iam:ListUsers",
+                "sts:GetCallerIdentity",
+                "iam:GetCredentialReport",
+                "ec2:DescribeSubnets"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+>
+> 7. After creating the IAM policy, connect the created IAM policy to the IAM user, and continue to click "Next" to complete user creation.
+> 
+> Once an IAM user is created, select the Security credentials tab on the IAM user details page and press "Create access key" to create an Access key. <br>[[Create IAM User Access Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey)]
+>
+> [Set up the credentials file for the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) in an environment where AWS CLI is installed.
+
+<br>
+
+### [Configuring the Python Environment]
+> First, download the script using the git clone command.
+```bash
+git clone https://github.com/aws-samples/security-baseline-self-test.git
+```
+
+> Run the command below to create a virtual environment to run the script.<br>
+```bash
+python3 -m venv ssb-env
+```
+> Once the virtual environment is created, run the command below to activate it.<br>
+> 
+> [windows]
+```bash
+ssb-env\Scripts\activate.bat
+```
+> [Unix or MacOS]
+```bash
+source ssb-env/bin/activate
+```
+> Once the virtual environment is activated, run the command below to install the package needed to run the script.<br>
+```bash
+python -m pip install -r requirements.txt
+```
+
+### [Run Script]
+> Run main.py in the [sst](./sst) directory of the downloaded script.
+```bash
+cd sst
+python3 main.py
+```
+> If you specified the profile name when setting up the credential file in the AWS CLI, you can also run the script by putting the profile name as an executor as shown below.
+```bash
+python3 main.py security-test
+```
+> When you run the script, select the language first.<br>
+> Currently, English and Korean are supported.<br>
+> After the check, view the results report in html format generated within the sst directory.
+
+### [ Report Sample ]
+
+> ![report_sample](./images/report_sample_eng.png)<br><br>
+
+# FAQ
+> *- What can be done to test more items in order to further improve the security?*<br>
+> If you want to test the security of more AWS accounts, using the [AWS Trusted Advisor](https://aws.amazon.com/blogs/aws/aws-trusted-advisor-new-priority-capability/) would be a good choice. The AWS Trusted Advisor is a service that analyzes your AWS accounts regularly, and help you follow the AWS security best practices and Well-Architected guidelines. If you manage your security items through AWS Trusted Advisor, you can improve the security of your AWS accounts. 
+>
+> <br>
+>
+> *- Where can I find additional information or guidelines on how to improve the AWS security level?*<br>
+> AWS is providing the [AWS Well-Architected Tool](https://docs.aws.amazon.com/wellarchitected/latest/userguide/intro.html), a service in the cloud that provides a consistent process for measuring customers’ architectures using AWS best practices. If you need additional information or guidelines to improve your security, you can refer to security best practices on AWS Well Architected Tool’s Security pillar to design and diagnose your architecture. 
+
+<br><br><br>
+# Korean
 # What is a Security Baseline Self-Test Script?
 > [공동 책임 모델](https://aws.amazon.com/ko/compliance/shared-responsibility-model/?nc1=h_ls)에 따라 AWS와 고객은 클라우드 보안에 대한 공동의 책임을 지닙니다. AWS는 클라우드에서 제공되는 모든 서비스를 실행하는 소프트웨어와 하드웨어를 포함한 인프라를 보호할 책임이 있습니다. 반면 고객은 이용하는 AWS 클라우드 서비스에서의 보안을 구성하고 관리할 책임을 가집니다.<br><br>
 > Security Baseline Self-Test Script은 사용중인 `AWS 계정의 가장 기본적인 보안권고 사항에 대한 설정을 점검`하고, 그 `결과를 리포트로 제공`하는 Script 입니다.
@@ -26,10 +173,58 @@
 ### [점검 권한을 가진 IAM 계정 생성]
 <br>
 
-> 먼저 점검을 하고자 하는 계정에서 [IAM 사용자를 생성](https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_users_create.html#id_users_create_console)합니다. 
+> 먼저 점검을 하고자 하는 계정에서 아래의 순서대로 IAM 사용자를 생성합니다.
+> 
+> 1. 먼저 AWS Management Console 에서 IAM Console을 엽니다.
+> 2. 탐색 창에서 사용자(Users)와 사용자 추가(Add users)를 차례로 선택합니다.
+> 3. 신규 사용자의 사용자 이름을 입력합니다. 이것은 AWS에 로그인할 때 사용하는 이름입니다.
+> 4. 이 사용자 세트에게 부여할 액세스 권한의 유형으로 "프로그래밍 방식 액세스"를 선택합니다.
+> 5. 다음: 권한(Next: Permissions)를 선택합니다.
+> 6. "기존 정책을 직접 연결합니다." 옵션을 선택한 뒤, "정책 생성"을 선택해서 새로운 정책을 생성합니다.
+> 7. 정책은 "JSON" 탭을 선택하고, 아래의 IAM 사용자 권한 정책을 복사해서 사용해주세요.
 >
-> IAM 사용자의 권한은 [permission.json](./permission.json) 파일을 참고하여 추가해주시기 바랍니다.
+> Tip) 아래의 IAM 사용자의 권한은 Root Account와 IAM User의 보안설정을 점검하기 위한 IAM Credential Report를 생성하는 권한 외에는 모두 읽기전용 권한으로 구성되어 있어 기존의 설정을 변경하지 않고 진단만 수행합니다. <br> 자세한 권한 정의는 아래와 같고, [permission.json](./permission.json) 파일에 정의되어 있습니다.
+```bash
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "SSBUserPermission",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GenerateCredentialReport",
+                "s3:GetBucketPublicAccessBlock",
+                "iam:GetAccountPasswordPolicy",
+                "cloudtrail:GetTrail",
+                "ec2:DescribeInstances",
+                "guardduty:ListDetectors",
+                "cloudtrail:GetTrailStatus",
+                "account:GetAlternateContact",
+                "ec2:DescribeRegions",
+                "s3:ListBucket",
+                "iam:ListUserPolicies",
+                "support:DescribeTrustedAdvisorChecks",
+                "guardduty:GetDetector",
+                "cloudtrail:DescribeTrails",
+                "s3:GetAccountPublicAccessBlock",
+                "s3:ListAllMyBuckets",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribeVpcs",
+                "iam:ListAttachedUserPolicies",
+                "cloudwatch:DescribeAlarms",
+                "iam:ListUsers",
+                "sts:GetCallerIdentity",
+                "iam:GetCredentialReport",
+                "ec2:DescribeSubnets"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
 >
+> 8. IAM 정책 생성 후, 생성한 IAM 정책을 IAM 사용자에게 연결해주고, 계속 "다음"을 눌러 사용자 생성을 완료해주세요.
+> 
 > IAM 사용자가 생성되면 해당 IAM 사용자 상세정보 페이지에서 Security credentials 탭을 선택하고 "Create access key"를 눌러 Access key를 만들어주세요. <br>[[IAM 사용자 Access Key 생성](https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey)]
 >
 > AWS CLI가 설치된 환경에서 [AWS CLI의 자격 증명 파일을 설정](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-files.html)해주시기 바랍니다.
