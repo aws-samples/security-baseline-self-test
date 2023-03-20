@@ -3,3 +3,4 @@
 .venv
 *.pyc
 ssb-env
+*.__pycache__

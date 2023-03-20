@@ -108,6 +108,7 @@ ssb-env\Scripts\activate.bat
 ```
 > [Unix or MacOS]
 ```bash
+cd sst
 source ssb-env/bin/activate
 ```
 > Once the virtual environment is activated, run the command below to install the package needed to run the script.<br>
@@ -116,14 +117,13 @@ python -m pip install -r requirements.txt
 ```
 
 ### [Run Script]
-> Run main.py in the [sst](./sst) directory of the downloaded script.
+> Run run_script.py in the [sst](./sst) directory of the downloaded script.
 ```bash
-cd sst
-python3 main.py
+python3 run_script.py
 ```
 > If you specified the profile name when setting up the credential file in the AWS CLI, you can also run the script by putting the profile name as an executor as shown below.
 ```bash
-python3 main.py security-test
+python3 run_script.py security-test
 ```
 > When you run the script, select the language first.<br>
 > Currently, English and Korean are supported.<br>
@@ -246,6 +246,7 @@ ssb-env\Scripts\activate.bat
 ```
 > [Unix 또는 MacOS]
 ```bash
+cd sst
 source ssb-env/bin/activate
 ```
 > 가상환경이 활성화되면 아래의 명령을 실행하여 스크립트 실행에 필요한 패키지를 설치해주시기 바랍니다.<br>
@@ -254,14 +255,13 @@ python -m pip install -r requirements.txt
 ```
 
 ### [스크립트 실행]
-> 다운받은 스크립트의 [sst](./sst) 디랙토리 내의 main.py 를 실행합니다.
+> 다운받은 스크립트의 [sst](./sst) 디랙토리 내의 run_script.py 를 실행합니다.
 ```bash
-cd sst
-python3 main.py
+python3 run_script.py
 ```
 > AWS CLI의 자격 증명 파일 설정시 프로파일 명을 지정했다면, 해당 프로파일명을 아래와 같이 실행인자로 넣어 스크립트를 실행할 수도 있습니다.
 ```bash
-python3 main.py security-test
+python3 run_script.py security-test
 ```
 > 스크립트를 실행하면 언어를 선택합니다.<br>
 > 현재 영어와 한국어를 지원합니다.<br>
