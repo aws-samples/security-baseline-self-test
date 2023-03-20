@@ -6,7 +6,7 @@ import concurrent.futures
 import report_generator
 import datetime
 import logging, traceback
-import sys
+import argparse
 
 def execute_test(session) -> tuple:
 
@@ -58,16 +58,17 @@ def execute_test(session) -> tuple:
 
 ret = common.Ret()
 
-if len(sys.argv) == 1:
+parser = argparse.ArgumentParser()
+parser.add_argument("--profile", default="default", dest="profile", action="store", help="IAM user profile")
+
+args = parser.parse_args()
+
+if args.profile == "default":
     print("AWS Credential : Default Profile")
     session = boto3.Session()
-elif len(sys.argv) == 2:
-    aws_profile = sys.argv[1]
-    print("AWS Credentials : ${profile}".format(profile=aws_profile))
-    session = boto3.Session(profile_name=aws_profile)
 else:
-    print("usage: python3 main.py <(optional) profile name>")
-    exit()
+    print("AWS Credentials : ${profile}".format(profile=args.profile))
+    session = boto3.Session(profile_name=args.profile)
 
 sts_client = session.client('sts')
 selected_language = ""
