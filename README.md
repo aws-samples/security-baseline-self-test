@@ -124,7 +124,7 @@ python3 run_script.py
 ```
 > If you specified the profile name when setting up the credential file in the AWS CLI, you can also run the script by putting the profile name as an executor as shown below.
 ```bash
-python3 run_script.py security-test
+python3 run_script.py [--profile PROFILE]
 ```
 > When you run the script, select the language first.<br>
 > Currently, English and Korean are supported.<br>
@@ -263,7 +263,7 @@ python3 run_script.py
 ```
 > AWS CLI의 자격 증명 파일 설정시 프로파일 명을 지정했다면, 해당 프로파일명을 아래와 같이 실행인자로 넣어 스크립트를 실행할 수도 있습니다.
 ```bash
-python3 run_script.py security-test
+python3 run_script.py [--profile PROFILE]
 ```
 > 스크립트를 실행하면 언어를 선택합니다.<br>
 > 현재 영어와 한국어를 지원합니다.<br>
