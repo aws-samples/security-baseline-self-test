@@ -98,6 +98,7 @@ git clone https://github.com/aws-samples/security-baseline-self-test.git
 
 > Run the command below to create a virtual environment to run the script.<br>
 ```bash
+cd security-baseline-self-test
 python3 -m venv ssb-env
 ```
 > Once the virtual environment is created, run the command below to activate it.<br>
@@ -108,11 +109,11 @@ ssb-env\Scripts\activate.bat
 ```
 > [Unix or MacOS]
 ```bash
-cd sst
 source ssb-env/bin/activate
 ```
 > Once the virtual environment is activated, run the command below to install the package needed to run the script.<br>
 ```bash
+cd sst
 python -m pip install -r requirements.txt
 ```
 
@@ -236,6 +237,7 @@ git clone https://github.com/aws-samples/security-baseline-self-test.git
 
 > 아래 명령어를 실행하여 스크립트를 실행할 가상 환경을 만들어주세요.<br>
 ```bash
+cd security-baseline-self-test
 python3 -m venv ssb-env
 ```
 > 가상환경이 생성되면, 아래의 명령을 실행하여 가상환경을 활성화해주시기 바랍니다.<br>
@@ -246,11 +248,11 @@ ssb-env\Scripts\activate.bat
 ```
 > [Unix 또는 MacOS]
 ```bash
-cd sst
 source ssb-env/bin/activate
 ```
 > 가상환경이 활성화되면 아래의 명령을 실행하여 스크립트 실행에 필요한 패키지를 설치해주시기 바랍니다.<br>
 ```bash
+cd sst
 python -m pip install -r requirements.txt
 ```
 
