@@ -142,6 +142,11 @@ python3 run_script.py [--profile PROFILE]
 >
 > *- Where can I find additional information or guidelines on how to improve the AWS security level?*<br>
 > AWS is providing the [AWS Well-Architected Tool](https://docs.aws.amazon.com/wellarchitected/latest/userguide/intro.html), a service in the cloud that provides a consistent process for measuring customers’ architectures using AWS best practices. If you need additional information or guidelines to enhance your security level, you can refer to security best practices on AWS Well Architected Tool’s Security pillar for architecture design and diagnosis. 
+>
+> <br>
+>
+> *- Can I scan other accounts in the same AWS Organization at once?*<br>
+> This script only supports scanning for a single AWS account. Therefore, if you want to scan other AWS accounts that are linked of the same AWS Organization, you must create another IAM user on those AWS accounts. Also, AWS Organization-level security settings cannot be scanned through this script.
 
 <br><br><br>
 # Korean
@@ -281,3 +286,8 @@ python3 run_script.py [--profile PROFILE]
 >
 > *- AWS 보안 수준을 향상시키기 위한 추가 정보나 가이드라인을 알고 싶은 경우 어떻게 하면 좋을까요?*<br>
 > AWS 에서는 AWS 모범사례를 사용하여 아키텍처를 측정하기 위한 일관된 프로세스를 제공하는 클라우드 서비스로 [AWS Well-Architected Tool](https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/userguide/intro.html) 을 제공하고 있습니다. 보안 수준을 향상시키기 위한 추가 정보나 가이드라인이 필요하신 경우 AWS Well Architected Tool 의 Security pillar 를 기반으로 보안 모범사례를 참고하여 아키텍처 설계 및 진단을 하실 수 있습니다.
+>
+> <br>
+>
+> *- 동일한 AWS Organization에 속한 다른 계정도 한번에 검사가 가능한가요?*<br>
+> 이 스크립트는 단일 AWS 계정에 대한 검사만 지원합니다. 따라서 동일한 AWS Organization에 속해있는 다른 AWS 계정을 검사하고 싶은 경우에는 해당 AWS 계정에서 별도의 IAM 계정을 생성해야 합니다. 또한 AWS Organization 수준의 보안 설정은 본 스크립트를 통해 검사가 불가능합니다.
