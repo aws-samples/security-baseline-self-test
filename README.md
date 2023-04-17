@@ -134,6 +134,12 @@ python3 run_script.py [--profile PROFILE]
 
 > ![report_sample](./images/report_sample_eng.png)<br><br>
 
+### [ User Survey ]
+
+> We're constantly improving the Security Baseline Self-test with user's feedback. Please share what you like, don't like, or have ideas for improvement in the survey below, and we'll make sure to bring you better content in the future.
+>
+> [(English) Survey Link](https://pulse.buildon.aws/survey/SECBHHHT)
+
 # FAQ
 > *- What can be done to test more items in order to further improve the security?*<br>
 > If you want to test the security of more AWS accounts, using the [AWS Trusted Advisor](https://aws.amazon.com/blogs/aws/aws-trusted-advisor-new-priority-capability/) would be a good choice. The AWS Trusted Advisor is a service that analyzes your AWS accounts regularly, and help you follow the AWS security best practices and Well-Architected framework. If you manage your security items through AWS Trusted Advisor, you can improve the security of your AWS accounts. 
@@ -277,6 +283,13 @@ python3 run_script.py [--profile PROFILE]
 ### [ Report Sample ]
 
 > ![report_sample](./images/report_sample.png)<br><br>
+
+
+### [사용자 의견]
+
+> Security Baseline Self-test는 사용자의 의견을 받아 지속적으로 개선이 이루어지고 있습니다. 사용하시면서 좋았던 점과 불편했던 점 또는 개선을 위한 아이디어를 아래 설문조사를 통해 공유해주시면 향후 더 발전된 컨텐츠를 제공해드리겠습니다.
+>
+> [(한국어) Survey Link](https://pulse.buildon.aws/survey/ZBSAR85T)
 
 # FAQ
 > *- 보안 수준을 향상시키기 위해 더 많은 항목을 점검하려면 어떻게 해야 하나요?*<br>
