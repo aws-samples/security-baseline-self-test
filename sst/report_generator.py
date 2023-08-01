@@ -519,6 +519,14 @@ def finalize_html_korean():
                     <span>AWS Trusted Advisor 사용 방법에 대한 자세한 내용은 <a href="https://aws.amazon.com/ko/premiumsupport/knowledge-center/trusted-advisor-intro/" target="_blank" style="overflow:hidden;word-break:break-all;">여기</a>를 눌러 확인해주세요.</span>
                 </div>
                 </div>
+                <div class="row">
+                <div class="alert alert-primary d-flex align-items-center" role="alert"><svg aria-label="Info:"
+                        class="bi flex-shrink-0 me-2" width="24" height="24" role="img">
+                        <use xlink:href="#info-fill"></use>
+                    </svg>
+                    <span>보안 개선에 전문가의 도움이 필요한 경우, 문의 내용과 이 결과 리포트를 함께 아래 메일로 전달해주세요<br>확인 후 도움을 드리도록 하겠습니다.<br>AWS 한국 스타트업 팀 보안 이벤트 메일 : aws-kr-ssb@amazon.com</span>
+                </div>
+                </div>
             </div>
             <div class="col"></div>
         </div>
