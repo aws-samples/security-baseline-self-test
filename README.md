@@ -86,7 +86,9 @@ On the test report, we are providing multiple ways to effectively respond to sec
 > 
 > Once an IAM user is created, select the Security credentials tab on the IAM user details page and click "Create access key" to create an Access key. <br>[[Create IAM User Access Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey)]
 >
-> [Set up the credentials file for the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) in an environment where AWS CLI is installed.
+> [Set up the credentials file for the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) in an environment where AWS CLI is installed.<br><br>
+> Tip) AWS CloudShell allows you to use the AWS CLI directly.<br>
+> To learn how to use AWS CloudShell, see [Getting Started with AWS CloudShell](https://docs.aws.amazon.com/cloudshell/latest/userguide/getting-started.html)
 
 <br>
 
@@ -129,6 +131,9 @@ python3 run_script.py [--profile PROFILE]
 > When you run the script, select the language first.<br>
 > Currently, English and Korean are supported.<br>
 > When the assessment is completed, see the results report in html format generated within the sst directory.
+>
+> If you ran the check in AWS CloudShell, you'll need to download and view the resulting report.<br>
+You can learn how to download files from AWS CloudShell [here](https://docs.aws.amazon.com/cloudshell/latest/userguide/getting-started.html#download-file).
 
 ### [ Report Sample ]
 
@@ -153,6 +158,14 @@ python3 run_script.py [--profile PROFILE]
 >
 > *- Can I scan other accounts in the same AWS Organization at once?*<br>
 > This script only supports scanning for a single AWS account. Therefore, if you want to scan other AWS accounts that are linked of the same AWS Organization, you must create another IAM user on those AWS accounts. Also, AWS Organization-level security settings cannot be scanned through this script.
+>
+> <br>
+>
+> *- Is there a way to run this script without using an IAM Access Key?*<br>
+> After the 01/Aug/2023 update, you can check using IAM Role.<br> Please refer to [Overview of using IAM roles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-role.html#cli-role-overview) to add profile information, and then run the script by adding *profile* as an option as shown below.
+> ```bash
+> python3 run_script.py [--profile PROFILE]
+> ```
 
 <br><br><br>
 # Korean
@@ -236,7 +249,9 @@ python3 run_script.py [--profile PROFILE]
 > 
 > IAM 사용자가 생성되면 해당 IAM 사용자 상세정보 페이지에서 Security credentials 탭을 선택하고 "Create access key"를 눌러 Access key를 만들어주세요. <br>[[IAM 사용자 Access Key 생성](https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey)]
 >
-> AWS CLI가 설치된 환경에서 [AWS CLI의 자격 증명 파일을 설정](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-files.html)해주시기 바랍니다.
+> AWS CLI가 설치된 환경에서 [AWS CLI의 자격 증명 파일을 설정](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-files.html)해주시기 바랍니다.<br><br>
+> Tip) AWS CloudShell에서는 AWS CLI를 바로 사용하실 수 있습니다.<br>
+> AWS CloudShell 사용 방법은 [AWS CloudShell 시작하기](https://docs.aws.amazon.com/ko_kr/cloudshell/latest/userguide/getting-started.html)를 참고하시기 바랍니다.
 
 <br>
 
@@ -279,6 +294,9 @@ python3 run_script.py [--profile PROFILE]
 > 스크립트를 실행하면 언어를 선택합니다.<br>
 > 현재 영어와 한국어를 지원합니다.<br>
 > 점검이 끝나면 sst 디렉토리 내에 생성된 html 형식의 결과 리포트를 확인합니다.
+>
+> 만약 AWS CloudShell에서 점검을 진행한 경우, 결과 리포트를 다운로드한 뒤 확인해야 합니다.<br>
+> AWS CloudShell에서 파일을 다운로드하는 방법은 [여기](https://docs.aws.amazon.com/ko_kr/cloudshell/latest/userguide/getting-started.html#download-file)를 참고하시기 바랍니다.
 
 ### [ Report Sample ]
 
@@ -290,6 +308,10 @@ python3 run_script.py [--profile PROFILE]
 > Security Baseline Self-test는 사용자의 의견을 받아 지속적으로 개선이 이루어지고 있습니다. 사용하시면서 좋았던 점과 불편했던 점 또는 개선을 위한 아이디어를 아래 설문조사를 통해 공유해주시면 향후 더 발전된 컨텐츠를 제공해드리겠습니다.
 >
 > [(한국어) Survey Link](https://pulse.buildon.aws/survey/ZBSAR85T)
+> 
+> 점검 결과와 관련하여 추가 문의가 있거나 보안 개선에 전문가의 도움이 필요한 경우, 점검 결과 파일과 문의사항을 아래 한국 AWS 스타트업팀 보안 이벤트 메일을 통해 전달해주세요. 확인 후 도움을 드리도록 하겠습니다.
+>
+> AWS 한국 스타트업 팀 보안 이벤트 메일 : aws-kr-ssb@amazon.com
 
 # FAQ
 > *- 보안 수준을 향상시키기 위해 더 많은 항목을 점검하려면 어떻게 해야 하나요?*<br>
@@ -304,3 +326,13 @@ python3 run_script.py [--profile PROFILE]
 >
 > *- 동일한 AWS Organization에 속한 다른 계정도 한번에 검사가 가능한가요?*<br>
 > 이 스크립트는 단일 AWS 계정에 대한 검사만 지원합니다. 따라서 동일한 AWS Organization에 속해있는 다른 AWS 계정을 검사하고 싶은 경우에는 해당 AWS 계정에서 별도의 IAM 계정을 생성해야 합니다. 또한 AWS Organization 수준의 보안 설정은 본 스크립트를 통해 검사가 불가능합니다.
+>
+> <br>
+>
+> *- IAM Access Key를 사용하지 않고 점검하는 방법은 없나요?*<br>
+> 2023-Aug-01 업데이트 이후 IAM Role 을 이용한 점검이 가능합니다.
+> [AWS CLI에서 IAM 역할 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-role.html#cli-role-overview)을 참고하여 profile 정보를 추가하신 다음, 스크립트 실행 시 *profile* 을 옵션을 아래와 같이 추가하여 실행하세요.
+> ```bash
+> python3 run_script.py [--profile PROFILE]
+> ```
+
