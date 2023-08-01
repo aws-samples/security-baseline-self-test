@@ -7,6 +7,9 @@ import report_generator
 import datetime
 import logging, traceback
 import argparse
+import os
+
+global translators
 
 def execute_test(session) -> tuple:
 
@@ -63,6 +66,8 @@ parser.add_argument("--profile", default="default", dest="profile", action="stor
 
 args = parser.parse_args()
 
+session = ""
+
 if args.profile == "default":
     print("AWS Credential : Default Profile")
     session = boto3.Session()
@@ -70,7 +75,37 @@ else:
     print("AWS Credentials : ${profile}".format(profile=args.profile))
     session = boto3.Session(profile_name=args.profile)
 
-sts_client = session.client('sts')
+try:
+    sts_client = session.client('sts')
+    caller_identity = sts_client.get_caller_identity()
+    
+    user_id = caller_identity['UserId']
+    account = caller_identity['Account']
+    arn = caller_identity['Arn']
+
+    if session.region_name == None:
+        print('You must specify a region. You can also configure your region by running "aws configure".')
+        exit()
+
+    print("")
+    print("##################### AUDITOR INFO #####################")
+    print("##  USER ID : {user_id}".format(user_id=user_id))
+    print("##  ACCOUNT : {account}".format(account=account))
+    print("##  ARN : {arn}".format(arn=arn))
+    print("########################################################")
+
+except botocore.exceptions.ClientError as e:
+    if e.response['Error']['Code'] == 'AccessDenied':
+        print("Please Check IAM Permission. (sts:GetCallerIdentity is required)")
+        logging.error(traceback.format_exc())
+    else :
+        print("UnexpectedException")
+        logging.error(traceback.format_exc())
+    exit()
+except Exception as e:
+    logging.error(traceback.format_exc())
+    exit()
+
 selected_language = ""
 
 while True:
@@ -94,38 +129,9 @@ while True:
     else:
         print("Invalid Input. Please Select Valid Number.")
 
-global translator
+
 translator = language.translation("main", selected_language)
-
-try:
-    caller_identity = sts_client.get_caller_identity()
-    
-    user_id = caller_identity['UserId']
-    account = caller_identity['Account']
-    arn = caller_identity['Arn']
-
-    iam_client = session.client('iam')
-
-    IAM_USER_IDENTIFIER_PREFIX = "AIDA"
-    
-    if user_id[:4] != IAM_USER_IDENTIFIER_PREFIX:
-        print(translator.invalid_iam_entity())
-        exit()
-
-    else :
-        print(translator.start_test())
-
-except botocore.exceptions.ClientError as e:
-    if e.response['Error']['Code'] == 'AccessDenied':
-        print("Please Check IAM Permission. (sts:GetCallerIdentity is required)")
-        logging.error(traceback.format_exc())
-    else :
-        print("UnexpectedException")
-        logging.error(traceback.format_exc())
-    exit()
-except Exception as e:
-    logging.error(traceback.format_exc())
-    exit()
+print(translator.start_test())
 
 try:
     account_id_str, result_sort_by_level = execute_test(session)
@@ -149,6 +155,8 @@ else:
         ret.body = '''InternalException'''
 
     f.close()
+    
+    print("Result Path : {path}/{filename}".format(path=os.getcwd(), filename=report_object_name))
     
 print("Finish")
 logging.info('Successfully Finished')
