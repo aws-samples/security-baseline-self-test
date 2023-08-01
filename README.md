@@ -22,7 +22,7 @@ On the test report, we are providing multiple ways to effectively respond to sec
 <br>
 
 # How can I start this script?
-
+### Tip) [Watch Video Guide](https://youtu.be/bc_jk8eES_I)
 ### [Prerequisites]
 
 <br>
@@ -185,6 +185,7 @@ You can learn how to download files from AWS CloudShell [here](https://docs.aws.
 <br>
 
 # How can I start this script?
+### Tip) [동영상 가이드 보기](https://youtu.be/bc_jk8eES_I)
 
 ### [ 사전 준비 ]
 
