@@ -82,7 +82,7 @@ On the test report, we are providing multiple ways to effectively respond to sec
 }
 ```
 >
-> When conducting an inspection using CloudShell, you need to additionally grant the AWSCloudShellFullAccess permission.
+> Tip) When conducting an inspection using CloudShell, you need to additionally grant the AWSCloudShellFullAccess permission.
 >
 > 6. After creating the IAM policy, connect the created IAM policy to the IAM user, and click "Next" to complete user creation.
 > 
@@ -248,7 +248,7 @@ You can learn how to download files from AWS CloudShell [here](https://docs.aws.
 }
 ```
 >
-> Cloudshell을 사용해서 점검을 진행하는 경우, 추가로 **AWSCloudShellFullAccess** 권한을 부여해야 합니다.
+> Tip) Cloudshell을 사용해서 점검을 진행하는 경우, 추가로 **AWSCloudShellFullAccess** 권한을 부여해야 합니다.
 >
 > 6. IAM 정책 생성 후, 생성한 IAM 정책을 IAM 사용자에게 연결해주고, 계속 "다음"을 눌러 사용자 생성을 완료해주세요.
 > 
