@@ -1,0 +1,24 @@
+{
+  "max_workers": 10,
+  "checks": {
+    "root_mfa": "check_root_mfa_setting",
+    "root_usage": "check_root_usage",
+    "root_access_key": "check_root_accesskey_usage",
+    "iam_user_mfa": "check_iam_user_mfa_setting",
+    "iam_password_policy": "check_iam_password_policy",
+    "direct_attached_policy": "check_iam_direct_attached_policy",
+    "alternate_contacts": "check_alternate_contact_filling",
+    "trail_enabled": "check_trail_enabled",
+    "multi_region_trail": "check_multi_region_trail_enabled",
+    "account_level_bucket_public_access": "check_account_level_bucket_public_access",
+    "bucket_public_access": "check_bucket_public_access",
+    "cloudwatch_alarm_configuration": "check_cloudwatch_alarm_configuration",
+    "multi_region_instance_usage": "check_multiregion_instance_usage",
+    "guardduty_enabled": "check_guard_duty_enabled",
+    "trusted_advisor": "check_trust_advisor_configuration"
+  },
+  "credential_report": {
+    "first_iam_user_row_index": 2,
+    "root_row_index": 1
+  }
+}

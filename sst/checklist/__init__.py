@@ -1,1 +1,17 @@
-__all__=['root_mfa_setting_check', 'root_usage_check', 'root_user_accesskey_check', 'iam_user_mfa_setting_check', 'iam_password_policy_check', 'direct_attached_policy_check','alternate_contact_check', 'trail_enabled_check', 'multiregion_trail_enabled_check', 'account_level_bucket_public_access_check', 'bucket_public_access_check', 'cloudwatch_alarm_configuration_check','multiregion_instance_usage_check', 'guard_duty_check', 'trust_advisor_check']
+__all__=[
+    "root_mfa",
+    "root_usage",
+    "root_access_key",
+    "iam_user_mfa",
+    "iam_password_policy",
+    "direct_attached_policy",
+    "alternate_contacts",
+    "trail_enabled",
+    "multi_region_trail",
+    "account_level_bucket_public_access",
+    "bucket_public_access",
+    "cloudwatch_alarm_configuration",
+    "multi_region_instance_usage",
+    "guardduty_enabled",
+    "trusted_advisor"
+]
