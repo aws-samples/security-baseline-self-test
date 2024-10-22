@@ -128,11 +128,10 @@ python3 run_script.py
 ```
 > If you specified the profile name when setting up the credential file in the AWS CLI, you can also run the script by putting the profile name as an executor as shown below.
 ```bash
-python3 run_script.py [--profile PROFILE]
+python3 run_script.py [--profile PROFILE] [--language ENG/KOR/JPN]
 ```
-> When you run the script, select the language first.<br>
-> Currently, English and Korean are supported.<br>
-> When the assessment is completed, see the results report in html format generated within the sst directory.
+> Currently, English, Korean and Japaness are supported.<br>
+> When the assessment is completed, see the results report in html format generated within the results directory.
 >
 > If you ran the check in AWS CloudShell, you'll need to download and view the resulting report.<br>
 You can learn how to download files from AWS CloudShell [here](https://docs.aws.amazon.com/cloudshell/latest/userguide/getting-started.html#download-file).
@@ -166,7 +165,7 @@ You can learn how to download files from AWS CloudShell [here](https://docs.aws.
 > *- Is there a way to run this script without using an IAM Access Key?*<br>
 > After the 01/Aug/2023 update, you can check using IAM Role.<br> Please refer to [Overview of using IAM roles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-role.html#cli-role-overview) to add profile information, and then run the script by adding *profile* as an option as shown below.
 > ```bash
-> python3 run_script.py [--profile PROFILE]
+> python3 run_script.py [--profile PROFILE] [--language ENG/KOR/JPN]
 > ```
 
 <br><br><br>
@@ -294,11 +293,10 @@ python3 run_script.py
 ```
 > AWS CLI의 자격 증명 파일 설정시 프로파일 명을 지정했다면, 해당 프로파일명을 아래와 같이 실행인자로 넣어 스크립트를 실행할 수도 있습니다.
 ```bash
-python3 run_script.py [--profile PROFILE]
+python3 run_script.py [--profile PROFILE] [--language ENG/KOR/JPN]
 ```
-> 스크립트를 실행하면 언어를 선택합니다.<br>
-> 현재 영어와 한국어를 지원합니다.<br>
-> 점검이 끝나면 sst 디렉토리 내에 생성된 html 형식의 결과 리포트를 확인합니다.
+> 현재 영어와 한국어, 일본어를 지원합니다.<br>
+> 점검이 끝나면 results 디렉토리 내에 생성된 html 형식의 결과 리포트를 확인합니다.
 >
 > 만약 AWS CloudShell에서 점검을 진행한 경우, 결과 리포트를 다운로드한 뒤 확인해야 합니다.<br>
 > AWS CloudShell에서 파일을 다운로드하는 방법은 [여기](https://docs.aws.amazon.com/ko_kr/cloudshell/latest/userguide/getting-started.html#download-file)를 참고하시기 바랍니다.
@@ -338,6 +336,6 @@ python3 run_script.py [--profile PROFILE]
 > 2023-Aug-01 업데이트 이후 IAM Role 을 이용한 점검이 가능합니다.
 > [AWS CLI에서 IAM 역할 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-role.html#cli-role-overview)을 참고하여 profile 정보를 추가하신 다음, 스크립트 실행 시 *profile* 을 옵션을 아래와 같이 추가하여 실행하세요.
 > ```bash
-> python3 run_script.py [--profile PROFILE]
+> python3 run_script.py [--profile PROFILE] [--language ENG/KOR/JPN]
 > ```
 
